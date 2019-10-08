@@ -1,5 +1,5 @@
 
-image: "mono:latest"
+image: "mono"
 
 
 stages:
