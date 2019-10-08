@@ -14,7 +14,7 @@ namespace flappyBird
             texture = texture2;
         }
         public void update(double interval) { position += interval * 20; }
-        public void draw(SpriteBatch spriteBatch) { spriteBatch.Draw(texture, new Rectangle(Convert.ToInt32(position), 0, 50, 50), Color.White); }
+        public void draw(SpriteBatch spriteBatch) { spriteBatch.Draw(texture, new Rectangle(20, Convert.ToInt32(position), 50, 50), Color.White); }
     }
     public class Game1 : Game
     {
@@ -64,7 +64,7 @@ namespace flappyBird
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Red);
 
             spriteBatch.Begin();
 
