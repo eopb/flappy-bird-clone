@@ -9,6 +9,7 @@ before_script:
   - apt-get install apt-transport-https -y
   - apt-get update
   - apt-get install dotnet-sdk-3.0 -y
+  - apt-get install fonts-dejavu -y
 
 stages:
   - build
