@@ -29,7 +29,7 @@ windows-optimized:
     - dotnet publish -c Release -r win10-x64
     - rm -r -f files
     - mkdir files
-    - cp bin/Release/netcoreapp2.0/win10-x64 files
+    - cp -r bin/Release/netcoreapp2.0/win10-x64 files
     - tree
   when: on_success
   artifacts:
@@ -43,7 +43,7 @@ linux-optimized:
     - dotnet publish -c Release -r linux-x64
     - rm -r -f files
     - mkdir files
-    - cp bin/Release/netcoreapp2.0/linux-x64 files
+    - cp -r bin/Release/netcoreapp2.0/linux-x64 files
     - tree
   when: on_success
   artifacts:
