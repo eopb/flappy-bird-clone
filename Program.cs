@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace newdotnettest
+namespace flappyBird
 {
     public static class Program
     {

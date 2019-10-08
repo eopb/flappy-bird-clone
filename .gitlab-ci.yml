@@ -1,12 +1,54 @@
 
 image: "mono"
 
+before_script:
+  - apt-get update
+  - apt-get install wget
+  - wget -q https://packages.microsoft.com/config/ubuntu/16.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+  - dpkg -i packages-microsoft-prod.deb
+  - apt-get install apt-transport-https -y
+  - apt-get update
+  - apt-get install dotnet-sdk-3.0 -y
+  - apt-get install fonts-dejavu -y
+  # For some reason I need this for fonts to work with monogame.
+  - apt-get install fontconfig tree -y
 
 stages:
-  - build
+  - check
+  - deploy-examples
 
 
 build:
-  stage: build
+  stage: check
   script:
     - dotnet build
+
+windows-optimized:
+  stage: deploy-examples
+  script:
+    - rm -r bin 2> /dev/null
+    - dotnet publish -c Release -r win10-x64
+    - rm -r -f files
+    - mkdir files
+    - cp -r bin/Release/ files
+    - tree
+  when: on_success
+  artifacts:
+    paths:
+      - files
+    expire_in: 2 weeks
+
+linux-optimized:
+  stage: deploy-examples
+  script:
+    - rm -r bin 2> /dev/null
+    - dotnet publish -c Release -r linux-x64
+    - rm -r -f files
+    - mkdir files
+    - cp -r bin/Release/ files
+    - tree
+  when: on_success
+  artifacts:
+    paths:
+      - files
+    expire_in: 2 weeks
