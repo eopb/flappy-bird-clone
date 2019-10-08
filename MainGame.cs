@@ -16,7 +16,7 @@ namespace flappyBird
         public void update(double interval) { position += interval * 20; }
         public void draw(SpriteBatch spriteBatch) { spriteBatch.Draw(texture, new Rectangle(20, Convert.ToInt32(position), 50, 50), Color.White); }
     }
-    public class Game1 : Game
+    public class MainGame : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -28,7 +28,7 @@ namespace flappyBird
 
         private int score = 0;
 
-        public Game1()
+        public MainGame()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
