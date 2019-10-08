@@ -11,13 +11,36 @@ before_script:
   - apt-get install dotnet-sdk-3.0 -y
   - apt-get install fonts-dejavu -y
   # For some reason I need this for fonts to work with monogame.
-  - apt-get install fontconfig -y
+  - apt-get install fontconfig tree -y
 
 stages:
-  - build
+  - check
+  - deploy-examples
 
 
 build:
-  stage: build
+  stage: check
   script:
     - dotnet build
+
+linux-optimized:
+  stage: deploy-examples
+  script:
+    - dotnet publish -c Release -r win10-x64
+    - tree
+  when: on_success
+  artifacts:
+    paths:
+      - files
+    expire_in: 2 weeks
+
+windows-optimized:
+  stage: deploy-examples
+  script:
+    - dotnet publish -c Release -r linux-x64
+    - tree
+  when: on_success
+  artifacts:
+    paths:
+      - files
+    expire_in: 2 weeks
