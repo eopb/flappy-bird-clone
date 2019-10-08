@@ -1,6 +1,8 @@
 
 image: "mono"
 
+before_script:
+  - apt-get update
 
 stages:
   - build
