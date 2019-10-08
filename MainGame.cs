@@ -13,8 +13,11 @@ namespace flappyBird
         {
             texture = texture2;
         }
-        public void update(double interval) { position += interval * 20; }
-        public void draw(SpriteBatch spriteBatch) { spriteBatch.Draw(texture, new Rectangle(20, Convert.ToInt32(position), 50, 50), Color.White); }
+        public void update(double interval) { position += interval * 100; }
+        public void draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Rectangle(20, Convert.ToInt32(position), 50, 50), Color.White);
+        }
     }
     public class MainGame : Game
     {
@@ -55,7 +58,7 @@ namespace flappyBird
             if (lastTime == null) lastTime = gameTime.TotalGameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            if (Keyboard.GetState().IsKeyDown(Keys.Space))
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (!pressedLastTick)
                 {
