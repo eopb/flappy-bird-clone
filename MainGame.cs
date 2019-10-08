@@ -8,7 +8,7 @@ namespace flappyBird
     public class Bird
     {
 
-        private const double acceleration = 100.0;
+        private const double acceleration = 200.0;
         public double velocity = 0;
         private double position = 0.0;
         private float angle = 0f;
