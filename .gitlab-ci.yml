@@ -30,7 +30,7 @@ windows-optimized:
     - dotnet publish -c Release -r win10-x64
     - rm -r -f files
     - mkdir files
-    - cp -r bin/Release/ files
+    - cp -r bin/ files
     - tree
   when: on_success
   artifacts:
@@ -45,7 +45,7 @@ linux-optimized:
     - dotnet publish -c Release -r linux-x64
     - rm -r -f files
     - mkdir files
-    - cp -r bin/Release/ files
+    - cp -r bin/ files
     - tree
   when: on_success
   artifacts:
