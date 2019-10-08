@@ -1,5 +1,5 @@
 # flappy bird clone
-[![pipeline status](https://gitlab.com/efunb/flappy-bird-clone/badges/stable/pipeline.svg)](https://gitlab.com/efunb/flappy-bird-clone/commits/stable)
+[![pipeline status](https://gitlab.com/efunb/flappy-bird-clone/badges/master/pipeline.svg)](https://gitlab.com/efunb/flappy-bird-clone/commits/master)
 
 ```
 dotnet publish -c Release -r win10-x64
