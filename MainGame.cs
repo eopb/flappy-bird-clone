@@ -7,13 +7,18 @@ namespace flappyBird
 {
     public class Bird
     {
-        private double position = 0.0;
+
+        private const double acceleration = 100.0;
+        private double velocity = 0;
+        public double position = 0.0;
         private Texture2D texture;
         public Bird(Texture2D texture2)
         {
             texture = texture2;
         }
-        public void update(double interval) { position += interval * 100; }
+        public void update(double interval)
+        { velocity += acceleration * interval; position += velocity * interval; }
+        public void jump() { velocity = -150; }
         public void draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle(20, Convert.ToInt32(position), 50, 50), Color.White);
@@ -58,11 +63,16 @@ namespace flappyBird
             if (lastTime == null) lastTime = gameTime.TotalGameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            double interval = (gameTime.TotalGameTime - lastTime).TotalSeconds;
+            lastTime = gameTime.TotalGameTime;
+            Console.WriteLine(bird.position);
+            bird.update(interval);
             if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (!pressedLastTick)
                 {
                     Console.WriteLine("Space key pressed");
+                    bird.jump();
                 }
                 pressedLastTick = true;
             }
@@ -70,10 +80,7 @@ namespace flappyBird
             {
                 pressedLastTick = false;
             }
-            double interval = (gameTime.TotalGameTime - lastTime).TotalSeconds;
-            Console.WriteLine(interval);
-            bird.update(interval);
-            lastTime = gameTime.TotalGameTime;
+
 
             base.Update(gameTime);
         }
