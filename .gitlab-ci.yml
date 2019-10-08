@@ -1,0 +1,16 @@
+
+image: "mono:latest"
+
+
+stages:
+  - build
+  - test
+  - publish
+  - deploy
+  - post-run
+
+
+build:
+  stage: build
+  script:
+    - dotnet build
