@@ -4,10 +4,6 @@ image: "mono:latest"
 
 stages:
   - build
-  - test
-  - publish
-  - deploy
-  - post-run
 
 
 build:
