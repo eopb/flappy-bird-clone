@@ -27,6 +27,9 @@ linux-optimized:
   stage: deploy-examples
   script:
     - dotnet publish -c Release -r win10-x64
+    - rm -r -f files
+    - mkdir files
+    - cp bin/Release/netcoreapp2.0/win10-x64 files
     - tree
   when: on_success
   artifacts:
