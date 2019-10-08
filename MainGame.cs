@@ -9,19 +9,36 @@ namespace flappyBird
     {
 
         private const double acceleration = 100.0;
-        private double velocity = 0;
-        public double position = 0.0;
+        public double velocity = 0;
+        private double position = 0.0;
+        private float angle = 0f;
         private Texture2D texture;
         public Bird(Texture2D texture2)
         {
             texture = texture2;
         }
         public void update(double interval)
-        { velocity += acceleration * interval; position += velocity * interval; }
+
+        {
+            velocity += acceleration * interval;
+            position += velocity * interval;
+            if ((angle <= 1.5 && velocity > 0) || (angle >= -1.5 && velocity < 0))
+            {
+                angle = (float)velocity / 200;
+            }
+        }
         public void jump() { velocity = -150; }
         public void draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle(20, Convert.ToInt32(position), 50, 50), Color.White);
+            Vector2 location = new Vector2(60, Convert.ToInt32(position));
+            Rectangle sourceRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
+            Vector2 origin = new Vector2(texture.Width / 2, texture.Height / 2);
+
+            float size = 0.38f;
+
+
+            spriteBatch.Draw(texture, location, null, sourceRectangle, origin, angle, new Vector2(size, size), Color.Green, SpriteEffects.None, 1);
+            // spriteBatch.Draw(texture, new Rectangle(60, Convert.ToInt32(position), 100, 100), Color.White);
         }
     }
     public class MainGame : Game
@@ -65,7 +82,7 @@ namespace flappyBird
                 Exit();
             double interval = (gameTime.TotalGameTime - lastTime).TotalSeconds;
             lastTime = gameTime.TotalGameTime;
-            Console.WriteLine(bird.position);
+            Console.WriteLine(bird.velocity);
             bird.update(interval);
             if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up))
             {

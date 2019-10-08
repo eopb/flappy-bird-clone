@@ -23,7 +23,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:flappybird.jpg
+/build:flappybird.png
 
 #begin score.spritefont
 /importer:FontDescriptionImporter
