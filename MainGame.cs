@@ -23,6 +23,7 @@ namespace flappyBird
 
         private SpriteFont font;
         private TimeSpan lastTime;
+        private TimeSpan lastPress;
 
         private Bird bird;
 
@@ -52,8 +53,14 @@ namespace flappyBird
         protected override void Update(GameTime gameTime)
         {
             if (lastTime == null) lastTime = gameTime.TotalGameTime;
+            if (lastTime == null) lastPress = gameTime.TotalGameTime;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            if (Keyboard.GetState().IsKeyDown(Keys.Space) && (gameTime.TotalGameTime - lastPress).TotalSeconds > 0.2)
+            {
+                Console.WriteLine("Space key pressed");
+                lastPress = gameTime.TotalGameTime;
+            };
             double interval = (gameTime.TotalGameTime - lastTime).TotalSeconds;
             Console.WriteLine(interval);
             bird.update(interval);
