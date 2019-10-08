@@ -10,6 +10,7 @@ before_script:
   - apt-get update
   - apt-get install dotnet-sdk-3.0 -y
   - apt-get install fonts-dejavu fonts-dejavu-core ttf-dejavu -y
+  - fc-list
 
 stages:
   - build
