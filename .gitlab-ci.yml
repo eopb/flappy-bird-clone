@@ -9,7 +9,9 @@ before_script:
   - apt-get install apt-transport-https -y
   - apt-get update
   - apt-get install dotnet-sdk-3.0 -y
-  - apt-get install fonts-dejavu fonts-dejavu-core ttf-dejavu fontconfig -y
+  - apt-get install fonts-dejavu fonts-dejavu-core ttf-dejavu -y
+  # For some reason I need this for fonts to work with monogame.
+  - apt-get install fontconfig -y
 
 stages:
   - build
