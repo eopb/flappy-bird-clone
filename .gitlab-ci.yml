@@ -23,7 +23,7 @@ build:
   script:
     - dotnet build
 
-linux-optimized:
+windows-optimized:
   stage: deploy-examples
   script:
     - dotnet publish -c Release -r win10-x64
@@ -37,10 +37,13 @@ linux-optimized:
       - files
     expire_in: 2 weeks
 
-windows-optimized:
+linux-optimized:
   stage: deploy-examples
   script:
     - dotnet publish -c Release -r linux-x64
+    - rm -r -f files
+    - mkdir files
+    - cp bin/Release/netcoreapp2.0/linux-x64 files
     - tree
   when: on_success
   artifacts:
