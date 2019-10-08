@@ -26,7 +26,7 @@ build:
 windows-optimized:
   stage: deploy-examples
   script:
-    - rm -r bin 2> /dev/null
+    - rm -r bin || true
     - dotnet publish -c Release -r win10-x64
     - rm -r -f files
     - mkdir files
@@ -41,7 +41,7 @@ windows-optimized:
 linux-optimized:
   stage: deploy-examples
   script:
-    - rm -r bin 2> /dev/null
+    - rm -r bin || true
     - dotnet publish -c Release -r linux-x64
     - rm -r -f files
     - mkdir files
