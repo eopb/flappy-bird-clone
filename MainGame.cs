@@ -37,8 +37,21 @@ namespace flappyBird
             float size = 0.38f;
 
 
+
             spriteBatch.Draw(texture, location, null, sourceRectangle, origin, angle, new Vector2(size, size), Color.Green, SpriteEffects.None, 1);
-            // spriteBatch.Draw(texture, new Rectangle(60, Convert.ToInt32(position), 100, 100), Color.White);
+            // spriteBatch.Draw(texture, new Rectangle(60, (Convert.ToInt32(position) - (texture.Height / 2)), 100, 100), Color.White);
+        }
+    }
+    public class Pipes
+    {
+        private Texture2D texture;
+        public Pipes(Texture2D texture2)
+        {
+            texture = texture2;
+        }
+        public void draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Rectangle(200, 60, 100, 100), Color.White);
         }
     }
     public class MainGame : Game
@@ -50,6 +63,7 @@ namespace flappyBird
         private TimeSpan lastTime;
 
         private Bird bird;
+        private Pipes pipes;
         private Boolean pressedLastTick = false;
 
         private int score = 0;
@@ -73,6 +87,7 @@ namespace flappyBird
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("score");
             bird = new Bird(Content.Load<Texture2D>("flappybird"));
+            pipes = new Pipes(Content.Load<Texture2D>("pipe"));
         }
 
         protected override void Update(GameTime gameTime)
@@ -109,8 +124,8 @@ namespace flappyBird
             spriteBatch.Begin();
 
             bird.draw(spriteBatch);
+            pipes.draw(spriteBatch);
             spriteBatch.DrawString(font, "Score: " + score, new Vector2(100, 100), Color.Green);
-
             spriteBatch.End();
 
             base.Draw(gameTime);
