@@ -33,11 +33,12 @@ namespace flappyBird
         public void jump() { velocity = -150; }
         public void draw(SpriteBatch spriteBatch)
         {
+            int side_distance = 60;
             int size = 260;
-            Vector2 location = new Vector2(60, Convert.ToInt32(position));
+            Vector2 location = new Vector2(side_distance, Convert.ToInt32(position));
             Rectangle sourceRectangle = new Rectangle(0, 0, size, size);
             Vector2 origin = new Vector2(size / 2, size / 2);
-            float scale = 0.4f;
+            float scale = 0.3f;
 
             spriteBatch.Draw(
                 texture,
@@ -50,7 +51,7 @@ namespace flappyBird
                 SpriteEffects.None,
                 1
             );
-            spriteBatch.Draw(test_texture, new Rectangle(60 - (int)(size * (scale / 2)), (Convert.ToInt32(position)) - (int)(size * (scale / 2)), (int)(size * scale), (int)(size * scale)), Color.White);
+            spriteBatch.Draw(test_texture, new Rectangle(side_distance - (int)(size * (scale / 2)), (Convert.ToInt32(position)) - (int)(size * (scale / 2)), (int)(size * scale), (int)(size * scale)), Color.White);
         }
     }
     public class PipeData
