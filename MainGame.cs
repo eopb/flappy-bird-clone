@@ -55,7 +55,8 @@ namespace flappyBird
     }
     public class Pipes
     {
-        public const double velocity = 200;
+        public const double velocity = 50;
+        public const double pipe_distance = 200;
         private Texture2D texture;
         private List<Pipe> pipe_list = new List<Pipe>();
         public Pipes(Texture2D texture2)
@@ -66,11 +67,9 @@ namespace flappyBird
         public void update(double interval)
 
         {
-            foreach (Pipe pipe in pipe_list)
-            {
-                pipe.update(interval, velocity);
-            }
-            if (pipe_list[pipe_list.Count - 1].position < 700)
+            foreach (Pipe pipe in pipe_list) pipe.update(interval, velocity);
+
+            if (pipe_list[pipe_list.Count - 1].position < (800 - pipe_distance))
             {
                 pipe_list.Add(new Pipe(texture));
             }
@@ -78,7 +77,7 @@ namespace flappyBird
 
         public void draw(SpriteBatch spriteBatch)
         {
-            foreach (Pipe pipe in pipe_list) { pipe.draw(spriteBatch); }
+            foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
         }
     }
     public class Pipe
@@ -98,10 +97,7 @@ namespace flappyBird
         }
         public void draw(SpriteBatch spriteBatch)
         {
-
-
             spriteBatch.Draw(texture, new Rectangle((int)position, 0, width, 480), Color.White);
-
         }
     }
     public class MainGame : Game
