@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace flappyBird
 {
@@ -54,14 +55,53 @@ namespace flappyBird
     }
     public class Pipes
     {
+        public const double velocity = 200;
         private Texture2D texture;
+        private List<Pipe> pipe_list = new List<Pipe>();
         public Pipes(Texture2D texture2)
         {
             texture = texture2;
+            pipe_list.Add(new Pipe(texture));
+        }
+        public void update(double interval)
+
+        {
+            foreach (Pipe pipe in pipe_list)
+            {
+                pipe.update(interval, velocity);
+            }
+            if (pipe_list[pipe_list.Count - 1].position < 700)
+            {
+                pipe_list.Add(new Pipe(texture));
+            }
+        }
+
+        public void draw(SpriteBatch spriteBatch)
+        {
+            foreach (Pipe pipe in pipe_list) { pipe.draw(spriteBatch); }
+        }
+    }
+    public class Pipe
+    {
+        private const int width = 60;
+        public double position;
+        private Texture2D texture;
+        public Pipe(Texture2D texture2)
+        {
+            texture = texture2;
+            position = 800.0;
+        }
+        public void update(double interval, double velocity)
+
+        {
+            position -= velocity * interval;
         }
         public void draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle(200, 60, 100, 100), Color.White);
+
+
+            spriteBatch.Draw(texture, new Rectangle((int)position, 0, width, 480), Color.White);
+
         }
     }
     public class MainGame : Game
@@ -109,6 +149,7 @@ namespace flappyBird
             lastTime = gameTime.TotalGameTime;
             Console.WriteLine(bird.velocity);
             bird.update(interval);
+            pipes.update(interval);
             if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (!pressedLastTick)
@@ -135,7 +176,7 @@ namespace flappyBird
 
             bird.draw(spriteBatch);
             pipes.draw(spriteBatch);
-            spriteBatch.DrawString(font, "Score: " + score, new Vector2(100, 100), Color.Green);
+            // spriteBatch.DrawString(font, "Score: " + score, new Vector2(100, 100), Color.Green);
             spriteBatch.End();
 
             base.Draw(gameTime);
