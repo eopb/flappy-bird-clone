@@ -53,10 +53,14 @@ namespace flappyBird
             spriteBatch.Draw(test_texture, new Rectangle(60 - (int)(size * (scale / 2)), (Convert.ToInt32(position)) - (int)(size * (scale / 2)), (int)(size * scale), (int)(size * scale)), Color.White);
         }
     }
-    public class Pipes
+    public class PipeData
+    {
+        public const double pipe_distance = 200;
+    }
+    public class Pipes : PipeData
     {
         public const double velocity = 50;
-        public const double pipe_distance = 200;
+
         private Texture2D texture;
         private List<Pipe> pipe_list = new List<Pipe>();
         public Pipes(Texture2D texture2)
@@ -83,6 +87,8 @@ namespace flappyBird
     public class Pipe
     {
         private const int width = 60;
+        private const int gap = 150;
+        private const int gap_position = 240;
         public double position;
         private Texture2D texture;
         public Pipe(Texture2D texture2)
@@ -97,7 +103,8 @@ namespace flappyBird
         }
         public void draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)position, 0, width, 480), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)position, 0, width, gap_position), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)position, gap_position + gap, width, 480 - (gap_position + gap)), Color.White);
         }
     }
     public class MainGame : Game
