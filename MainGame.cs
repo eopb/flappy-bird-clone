@@ -103,6 +103,10 @@ namespace flappyBird
             {
                 add_new_pipe();
             }
+            if (pipe_list[0].position < 0 - Constants.pipe_width)
+            {
+                pipe_list.RemoveAt(0);
+            }
         }
 
 
