@@ -11,8 +11,8 @@ namespace flappyBird
         public const int window_width = 800;
         public const int window_height = 480;
         public const int pipe_width = 60;
-        public const double pipe_distance = 200;
         public const int pipe_gap = 150;
+        public const double pipe_distance = 200;
     }
 
 
@@ -114,8 +114,26 @@ namespace flappyBird
         }
         public void draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)position, 0, Constants.pipe_width, gap_position), Color.White);
-            spriteBatch.Draw(texture, new Rectangle((int)position, gap_position + Constants.pipe_gap, Constants.pipe_width, Constants.window_height - (gap_position + Constants.pipe_gap)), Color.White);
+            spriteBatch.Draw(
+                texture,
+                new Rectangle(
+                    (int)position,
+                    0,
+                    Constants.pipe_width,
+                    gap_position
+                ),
+                Color.White
+            );
+            spriteBatch.Draw(
+                texture,
+                new Rectangle(
+                    (int)position,
+                    gap_position + Constants.pipe_gap,
+                    Constants.pipe_width,
+                    Constants.window_height - (gap_position + Constants.pipe_gap)
+                ),
+                Color.White
+            );
         }
     }
     public class MainGame : Game
