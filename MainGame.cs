@@ -52,7 +52,6 @@ namespace flappyBird
             spriteBatch.Draw(
                 texture: texture,
                 position: location,
-                destinationRectangle: null,
                 sourceRectangle: sourceRectangle,
                 origin: origin,
                 rotation: angle,
