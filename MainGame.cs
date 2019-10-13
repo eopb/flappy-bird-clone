@@ -8,10 +8,10 @@ namespace flappyBird
 {
     static class Constants
     {
-        public const int window_width = 800;
-        public const int window_height = 480;
-        public const int pipe_width = 60;
-        public const int pipe_gap = 150;
+        public const int window_width = 800,
+            window_height = 480,
+            pipe_width = 60,
+            pipe_gap = 150;
         public const double pipe_distance = 200;
     }
 
