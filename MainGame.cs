@@ -10,6 +10,9 @@ namespace flappyBird
     {
         public const int window_width = 800;
         public const int window_height = 480;
+        public const int pipe_width = 60;
+        public const double pipe_distance = 200;
+        public const int pipe_gap = 150;
     }
 
 
@@ -63,7 +66,6 @@ namespace flappyBird
     }
     public class PipeData
     {
-        public const double pipe_distance = 200; public const int gap = 150;
     }
     public class Pipes : PipeData
     {
@@ -82,7 +84,7 @@ namespace flappyBird
         {
             foreach (Pipe pipe in pipe_list) pipe.update(interval, velocity);
 
-            if (pipe_list[pipe_list.Count - 1].position < (Constants.window_width - pipe_distance))
+            if (pipe_list[pipe_list.Count - 1].position < (Constants.window_width - Constants.pipe_distance))
             {
                 pipe_list.Add(new Pipe(texture, random_gap_pos()));
             }
@@ -92,13 +94,10 @@ namespace flappyBird
         {
             foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
         }
-        private int random_gap_pos() => rnd.Next(0, Constants.window_height - gap);
+        private int random_gap_pos() => rnd.Next(0, Constants.window_height - Constants.pipe_gap);
     }
     public class Pipe : PipeData
     {
-
-        private const int width = 60;
-
         private int gap_position;
         public double position;
         private Texture2D texture;
@@ -115,22 +114,19 @@ namespace flappyBird
         }
         public void draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, new Rectangle((int)position, 0, width, gap_position), Color.White);
-            spriteBatch.Draw(texture, new Rectangle((int)position, gap_position + gap, width, Constants.window_height - (gap_position + gap)), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)position, 0, Constants.pipe_width, gap_position), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)position, gap_position + Constants.pipe_gap, Constants.pipe_width, Constants.window_height - (gap_position + Constants.pipe_gap)), Color.White);
         }
     }
     public class MainGame : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-
         private SpriteFont font;
         private TimeSpan lastTime;
-
         private Bird bird;
         private Pipes pipes;
         private Boolean pressedLastTick = false;
-
         private int score = 0;
 
         public MainGame()
