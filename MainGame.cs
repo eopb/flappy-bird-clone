@@ -6,6 +6,13 @@ using System.Collections.Generic;
 
 namespace flappyBird
 {
+    static class Constants
+    {
+        public const int window_width = 800;
+        public const int window_height = 480;
+    }
+
+
     public class Bird
     {
 
@@ -56,10 +63,11 @@ namespace flappyBird
     }
     public class PipeData
     {
-        public const double pipe_distance = 200;
+        public const double pipe_distance = 200; public const int gap = 150;
     }
     public class Pipes : PipeData
     {
+        private Random rnd = new Random();
         public const double velocity = 50;
 
         private Texture2D texture;
@@ -67,16 +75,16 @@ namespace flappyBird
         public Pipes(Texture2D texture2)
         {
             texture = texture2;
-            pipe_list.Add(new Pipe(texture));
+            pipe_list.Add(new Pipe(texture, random_gap_pos()));
         }
         public void update(double interval)
 
         {
             foreach (Pipe pipe in pipe_list) pipe.update(interval, velocity);
 
-            if (pipe_list[pipe_list.Count - 1].position < (800 - pipe_distance))
+            if (pipe_list[pipe_list.Count - 1].position < (Constants.window_width - pipe_distance))
             {
-                pipe_list.Add(new Pipe(texture));
+                pipe_list.Add(new Pipe(texture, random_gap_pos()));
             }
         }
 
@@ -84,18 +92,21 @@ namespace flappyBird
         {
             foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
         }
+        private int random_gap_pos() => rnd.Next(0, Constants.window_height - gap);
     }
-    public class Pipe
+    public class Pipe : PipeData
     {
+
         private const int width = 60;
-        private const int gap = 150;
-        private const int gap_position = 240;
+
+        private int gap_position;
         public double position;
         private Texture2D texture;
-        public Pipe(Texture2D texture2)
+        public Pipe(Texture2D texture2, int gap_position_arg)
         {
             texture = texture2;
-            position = 800.0;
+            position = Constants.window_width;
+            gap_position = gap_position_arg;
         }
         public void update(double interval, double velocity)
 
@@ -105,7 +116,7 @@ namespace flappyBird
         public void draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, new Rectangle((int)position, 0, width, gap_position), Color.White);
-            spriteBatch.Draw(texture, new Rectangle((int)position, gap_position + gap, width, 480 - (gap_position + gap)), Color.White);
+            spriteBatch.Draw(texture, new Rectangle((int)position, gap_position + gap, width, Constants.window_height - (gap_position + gap)), Color.White);
         }
     }
     public class MainGame : Game
