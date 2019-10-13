@@ -15,15 +15,24 @@ namespace flappyBird
         public const double pipe_distance = 200;
     }
 
-
     public class Bird
     {
-        private const double acceleration = 200.0;
+        public bool dead = false;
+        private double acceleration = 200.0;
         public double velocity = 0;
         private double position = 0.0;
         private float angle = 0f;
         private Texture2D texture;
         private Texture2D test_texture;
+        public void die()
+        {
+            dead = true;
+            acceleration = 600.0;
+            if (velocity < 0)
+            {
+                velocity = 0;
+            }
+        }
         public Bird(Texture2D texture2, Texture2D texture3)
         {
             texture = texture2;
@@ -75,31 +84,40 @@ namespace flappyBird
     public class Pipes
     {
         private Random rnd = new Random();
-        public const double velocity = 50;
+        public double velocity = 50;
 
         private Texture2D texture;
         private List<Pipe> pipe_list = new List<Pipe>();
         public Pipes(Texture2D texture2)
         {
             texture = texture2;
-            pipe_list.Add(new Pipe(texture, random_gap_pos()));
+            add_new_pipe();
         }
         public void update(double interval)
-
         {
             foreach (Pipe pipe in pipe_list) pipe.update(interval, velocity);
 
             if (pipe_list[pipe_list.Count - 1].position < (Constants.window_width - Constants.pipe_distance))
             {
-                pipe_list.Add(new Pipe(texture, random_gap_pos()));
+                add_new_pipe();
             }
         }
+
 
         public void draw(SpriteBatch spriteBatch)
         {
             foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
         }
-        private int random_gap_pos() => rnd.Next(0, Constants.window_height - Constants.pipe_gap);
+        private void add_new_pipe()
+        {
+            int random_gap_pos = rnd.Next(0, Constants.window_height - Constants.pipe_gap);
+            pipe_list.Add(new Pipe(texture, random_gap_pos));
+        }
+
+        public void die()
+        {
+            velocity = 0;
+        }
     }
     public class Pipe
     {
@@ -184,7 +202,7 @@ namespace flappyBird
             Console.WriteLine(bird.velocity);
             bird.update(interval);
             pipes.update(interval);
-            if (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up))
+            if ((bird.dead == false) && (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up)))
             {
                 if (!pressedLastTick)
                 {
@@ -196,6 +214,10 @@ namespace flappyBird
             else
             {
                 pressedLastTick = false;
+            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+            {
+                pipes.die(); bird.die();
             }
             base.Update(gameTime);
         }
