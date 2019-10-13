@@ -50,15 +50,16 @@ namespace flappyBird
             float scale = 0.3f;
 
             spriteBatch.Draw(
-                texture,
-                location,
-                null,
-                sourceRectangle,
-                origin, angle,
-                new Vector2(scale, scale),
-                Color.Green,
-                SpriteEffects.None,
-                1
+                texture: texture,
+                position: location,
+                destinationRectangle: null,
+                sourceRectangle: sourceRectangle,
+                origin: origin,
+                rotation: angle,
+                scale: new Vector2(scale, scale),
+                color: Color.Green,
+                effects: SpriteEffects.None,
+                layerDepth: 1
             );
             spriteBatch.Draw(test_texture, new Rectangle(side_distance - (int)(size * (scale / 2)), (Convert.ToInt32(position)) - (int)(size * (scale / 2)), (int)(size * scale), (int)(size * scale)), Color.White);
         }
