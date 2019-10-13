@@ -11,7 +11,9 @@ namespace flappyBird
         public const int window_width = 800,
             window_height = 480,
             pipe_width = 60,
-            pipe_gap = 150;
+            pipe_gap = 150,
+            bird_size = 260,
+            bird_x_distance = 60;
         public const double pipe_distance = 200;
     }
 
@@ -51,11 +53,11 @@ namespace flappyBird
         public void jump() { velocity = -150; }
         public void draw(SpriteBatch spriteBatch)
         {
-            int side_distance = 60;
-            int size = 260;
-            Vector2 location = new Vector2(side_distance, Convert.ToInt32(position));
-            Rectangle sourceRectangle = new Rectangle(0, 0, size, size);
-            Vector2 origin = new Vector2(size / 2, size / 2);
+
+
+            Vector2 location = new Vector2(Constants.bird_x_distance, Convert.ToInt32(position));
+            Rectangle sourceRectangle = new Rectangle(0, 0, Constants.bird_size, Constants.bird_size);
+            Vector2 origin = new Vector2(Constants.bird_size / 2, Constants.bird_size / 2);
             float scale = 0.3f;
 
             spriteBatch.Draw(
@@ -72,9 +74,9 @@ namespace flappyBird
             spriteBatch.Draw(
                 test_texture,
                 new Rectangle(
-                    side_distance - (int)(size * (scale / 2)),
-                    (Convert.ToInt32(position)) - (int)(size * (scale / 2)),
-                    (int)(size * scale), (int)(size * scale)
+                    Constants.bird_x_distance - (int)(Constants.bird_size * (scale / 2)),
+                    (Convert.ToInt32(position)) - (int)(Constants.bird_size * (scale / 2)),
+                    (int)(Constants.bird_size * scale), (int)(Constants.bird_size * scale)
                 ),
                 Color.White
             );
