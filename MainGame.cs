@@ -212,7 +212,7 @@ namespace flappyBird
             {
                 if (!pressedLastTick)
                 {
-                    Console.WriteLine("Space key pressed");
+                    Console.WriteLine("Jump key pressed");
                     bird.jump();
                 }
                 pressedLastTick = true;
