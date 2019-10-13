@@ -71,10 +71,8 @@ namespace flappyBird
             );
         }
     }
-    public class PipeData
-    {
-    }
-    public class Pipes : PipeData
+
+    public class Pipes
     {
         private Random rnd = new Random();
         public const double velocity = 50;
@@ -103,7 +101,7 @@ namespace flappyBird
         }
         private int random_gap_pos() => rnd.Next(0, Constants.window_height - Constants.pipe_gap);
     }
-    public class Pipe : PipeData
+    public class Pipe
     {
         private int gap_position;
         public double position;
