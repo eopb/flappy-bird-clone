@@ -60,7 +60,15 @@ namespace flappyBird
                 effects: SpriteEffects.None,
                 layerDepth: 1
             );
-            spriteBatch.Draw(test_texture, new Rectangle(side_distance - (int)(size * (scale / 2)), (Convert.ToInt32(position)) - (int)(size * (scale / 2)), (int)(size * scale), (int)(size * scale)), Color.White);
+            spriteBatch.Draw(
+                test_texture,
+                new Rectangle(
+                    side_distance - (int)(size * (scale / 2)),
+                    (Convert.ToInt32(position)) - (int)(size * (scale / 2)),
+                    (int)(size * scale), (int)(size * scale)
+                ),
+                Color.White
+            );
         }
     }
     public class PipeData
