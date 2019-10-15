@@ -17,14 +17,15 @@ namespace flappyBird
         public const double pipe_distance = 200;
         public const bool debug = false;
         public static bool inter(Rectangle r1, Rectangle r2) =>
-            ((r1.X < r2.X && r2.X < r1.X + r1.Width) ||
-            (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width) ||
-            (r2.X < r1.X && r1.X < r2.X + r2.Width) ||
-            (r2.X < r1.X + r1.Width && r1.X + r1.Width < r2.X + r2.Width)) &&
-            ((r1.Y < r2.Y && r2.Y < r1.Y + r1.Height) ||
-            (r1.Y < r2.Y + r2.Height && r2.Y + r2.Height < r1.Y + r1.Height) ||
-            (r2.Y < r1.Y && r1.Y < r2.Y + r2.Height) ||
-            (r2.Y < r1.Y + r1.Height && r1.Y + r1.Height < r2.Y + r2.Height));
+            ((r1.X < r2.X && r2.X < r1.X + r1.Width)
+            || (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width)
+            || (r2.X < r1.X && r1.X < r2.X + r2.Width)
+            || (r2.X < r1.X + r1.Width && r1.X + r1.Width < r2.X + r2.Width))
+            &&
+            ((r1.Y < r2.Y && r2.Y < r1.Y + r1.Height)
+            || (r1.Y < r2.Y + r2.Height && r2.Y + r2.Height < r1.Y + r1.Height)
+            || (r2.Y < r1.Y && r1.Y < r2.Y + r2.Height)
+            || (r2.Y < r1.Y + r1.Height && r1.Y + r1.Height < r2.Y + r2.Height));
 
     }
 
@@ -88,6 +89,7 @@ namespace flappyBird
                 layerDepth: 1
             ); if (Constants.debug)
             {
+#pragma warning disable 0162
                 spriteBatch.Draw(
                     test_texture,
                     hit_box(),
@@ -148,14 +150,7 @@ namespace flappyBird
         {
             foreach (Pipe pipe in pipe_list)
                 foreach (Rectangle pipe_rec in pipe.pipe_rectangles())
-                {
-
-                    if (Constants.inter(bird_rect, pipe_rec))
-                    {
-                        Console.WriteLine(pipe_rec); Console.WriteLine(bird_rect); return true;
-                    }
-                };
-
+                    if (Constants.inter(bird_rect, pipe_rec)) return true;
             return false;
         }
     }
