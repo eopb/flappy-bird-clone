@@ -26,86 +26,82 @@ namespace flappyBird
             pipe_width = 60,
             pipe_gap = 150,
             bird_size = 260,
-            bird_x_distance = 60;
+            bird_x_distance = 60,
+            bird_res = 80;
         public const double pipe_distance = 200;
+        public const float bird_scale = 0.9f;
         public const bool debug = false;
-
 
     }
 
     public class Bird
     {
+        private const double jump_time = 0.4;
         public bool dead = false;
-        private double acceleration = 200.0;
-        public double velocity = 0;
-        private double position = 0.0;
+        private double acceleration = 200.0,
+            velocity = 0,
+            position = 0.0;
         private float angle = 0f;
         private Texture2D texture,
             texture_jump,
-            test_texture;
-        private const double jump_time = 0.4;
+            debug_texture;
+
         private double last_jump_time = jump_time * -1;
-        private int bird_res = 80;
-        private float scale = 0.9f;
-        public void die()
+        public Bird(Texture2D texture_, Texture2D debug_texture_, Texture2D texture_jump_)
         {
-            dead = true;
-            acceleration = 600.0;
-            if (velocity < 0)
-            {
-                velocity = 0;
-            }
+            texture = texture_;
+            debug_texture = debug_texture_;
+            texture_jump = texture_jump_;
         }
-        public Bird(Texture2D texture2, Texture2D texture3, Texture2D texture4)
-        {
-            texture = texture2;
-            test_texture = texture3;
-            texture_jump = texture4;
-        }
+
         public void update(double interval)
 
         {
             velocity += acceleration * interval;
             position += velocity * interval;
+
             if ((angle <= 1.5 && velocity > 0) || (angle >= -1.5 && velocity < 0))
-            {
                 angle = (float)velocity / 200;
-            }
         }
-        public void jump(GameTime gameTime) { velocity = -150; last_jump_time = gameTime.TotalGameTime.TotalSeconds; }
         public void draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-
-            Vector2 location = new Vector2(Constants.bird_x_distance, Convert.ToInt32(position));
-            Rectangle sourceRectangle = new Rectangle(0, 0, bird_res, bird_res);
-            Vector2 origin = new Vector2(bird_res / 2, bird_res / 2);
-
-
             spriteBatch.Draw(
-                texture: gameTime.TotalGameTime.TotalSeconds - last_jump_time < jump_time ? texture_jump : texture,
-                position: location,
-                sourceRectangle: sourceRectangle,
-                origin: origin,
+                texture:
+                    gameTime.TotalGameTime.TotalSeconds - last_jump_time < jump_time
+                        ? texture_jump
+                        : texture,
+                position: new Vector2(Constants.bird_x_distance, Convert.ToInt32(position)),
+                sourceRectangle: new Rectangle(0, 0, Constants.bird_res, Constants.bird_res),
+                origin: new Vector2(Constants.bird_res / 2, Constants.bird_res / 2),
                 rotation: angle,
-                scale: new Vector2(scale, scale),
+                scale: new Vector2(Constants.bird_scale, Constants.bird_scale),
                 color: Color.White,
                 effects: SpriteEffects.None,
                 layerDepth: 1
-            ); if (Constants.debug)
-            {
+            );
 #pragma warning disable 0162
-                spriteBatch.Draw(
-                    test_texture,
-                    hit_box(),
-                    Color.White
-                );
-            }
+            if (Constants.debug)
+                spriteBatch.Draw(debug_texture, hit_box(), Color.White);
+        }
+
+        public void jump(GameTime gameTime)
+        {
+            last_jump_time = gameTime.TotalGameTime.TotalSeconds;
+            velocity = -150;
+        }
+        public void die()
+        {
+            dead = true;
+            acceleration = 600.0;
+            if (velocity < 0)
+                velocity = 0;
         }
         public Rectangle hit_box() => new Rectangle(
-                        Constants.bird_x_distance - (int)(bird_res * (scale / 2)),
-                        (Convert.ToInt32(position)) - (int)(bird_res * (scale / 2)),
-                        (int)(bird_res * scale), (int)(bird_res * scale)
-                    );
+            Constants.bird_x_distance - (int)(Constants.bird_res * (Constants.bird_scale / 2)),
+            (Convert.ToInt32(position)) - (int)(Constants.bird_res * (Constants.bird_scale / 2)),
+            (Constants.bird_res * Constants.bird_scale),
+            (int)(Constants.bird_res * Constants.bird_scale)
+        );
     }
 
     public class Pipes
