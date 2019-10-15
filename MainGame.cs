@@ -6,7 +6,20 @@ using System.Collections.Generic;
 
 namespace flappyBird
 {
-    static class Constants
+    class HelperFunc
+    {
+        public static bool inter(Rectangle r1, Rectangle r2) =>
+                    ((r1.X < r2.X && r2.X < r1.X + r1.Width)
+                    || (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width)
+                    || (r2.X < r1.X && r1.X < r2.X + r2.Width)
+                    || (r2.X < r1.X + r1.Width && r1.X + r1.Width < r2.X + r2.Width))
+                    &&
+                    ((r1.Y < r2.Y && r2.Y < r1.Y + r1.Height)
+                    || (r1.Y < r2.Y + r2.Height && r2.Y + r2.Height < r1.Y + r1.Height)
+                    || (r2.Y < r1.Y && r1.Y < r2.Y + r2.Height)
+                    || (r2.Y < r1.Y + r1.Height && r1.Y + r1.Height < r2.Y + r2.Height));
+    }
+    class Constants
     {
         public const int window_width = 800,
             window_height = 480,
@@ -16,16 +29,7 @@ namespace flappyBird
             bird_x_distance = 60;
         public const double pipe_distance = 200;
         public const bool debug = false;
-        public static bool inter(Rectangle r1, Rectangle r2) =>
-            ((r1.X < r2.X && r2.X < r1.X + r1.Width)
-            || (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width)
-            || (r2.X < r1.X && r1.X < r2.X + r2.Width)
-            || (r2.X < r1.X + r1.Width && r1.X + r1.Width < r2.X + r2.Width))
-            &&
-            ((r1.Y < r2.Y && r2.Y < r1.Y + r1.Height)
-            || (r1.Y < r2.Y + r2.Height && r2.Y + r2.Height < r1.Y + r1.Height)
-            || (r2.Y < r1.Y && r1.Y < r2.Y + r2.Height)
-            || (r2.Y < r1.Y + r1.Height && r1.Y + r1.Height < r2.Y + r2.Height));
+
 
     }
 
@@ -36,9 +40,9 @@ namespace flappyBird
         public double velocity = 0;
         private double position = 0.0;
         private float angle = 0f;
-        private Texture2D texture;
-        private Texture2D texture_jump;
-        private Texture2D test_texture;
+        private Texture2D texture,
+            texture_jump,
+            test_texture;
         private const double jump_time = 0.4;
         private double last_jump_time = jump_time * -1;
         private int bird_res = 80;
@@ -150,7 +154,7 @@ namespace flappyBird
         {
             foreach (Pipe pipe in pipe_list)
                 foreach (Rectangle pipe_rec in pipe.pipe_rectangles())
-                    if (Constants.inter(bird_rect, pipe_rec)) return true;
+                    if (HelperFunc.inter(bird_rect, pipe_rec)) return true;
             return false;
         }
     }
