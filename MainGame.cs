@@ -15,6 +15,7 @@ namespace flappyBird
             bird_size = 260,
             bird_x_distance = 60;
         public const double pipe_distance = 200;
+        public const bool debug = false;
     }
 
     public class Bird
@@ -25,7 +26,10 @@ namespace flappyBird
         private double position = 0.0;
         private float angle = 0f;
         private Texture2D texture;
+        private Texture2D texture_jump;
         private Texture2D test_texture;
+        private const double jump_time = 0.4;
+        private double last_jump_time = jump_time * -1;
         public void die()
         {
             dead = true;
@@ -35,10 +39,11 @@ namespace flappyBird
                 velocity = 0;
             }
         }
-        public Bird(Texture2D texture2, Texture2D texture3)
+        public Bird(Texture2D texture2, Texture2D texture3, Texture2D texture4)
         {
             texture = texture2;
             test_texture = texture3;
+            texture_jump = texture4;
         }
         public void update(double interval)
 
@@ -50,36 +55,38 @@ namespace flappyBird
                 angle = (float)velocity / 200;
             }
         }
-        public void jump() { velocity = -150; }
-        public void draw(SpriteBatch spriteBatch)
+        public void jump(GameTime gameTime) { velocity = -150; last_jump_time = gameTime.TotalGameTime.TotalSeconds; }
+        public void draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-
+            int bird_res = 80;
 
             Vector2 location = new Vector2(Constants.bird_x_distance, Convert.ToInt32(position));
-            Rectangle sourceRectangle = new Rectangle(0, 0, Constants.bird_size, Constants.bird_size);
-            Vector2 origin = new Vector2(Constants.bird_size / 2, Constants.bird_size / 2);
-            float scale = 0.3f;
+            Rectangle sourceRectangle = new Rectangle(0, 0, bird_res, bird_res);
+            Vector2 origin = new Vector2(bird_res / 2, bird_res / 2);
+            float scale = 0.9f;
 
             spriteBatch.Draw(
-                texture: texture,
+                texture: gameTime.TotalGameTime.TotalSeconds - last_jump_time < jump_time ? texture_jump : texture,
                 position: location,
                 sourceRectangle: sourceRectangle,
                 origin: origin,
                 rotation: angle,
                 scale: new Vector2(scale, scale),
-                color: Color.Green,
+                color: Color.White,
                 effects: SpriteEffects.None,
                 layerDepth: 1
-            );
-            spriteBatch.Draw(
-                test_texture,
-                new Rectangle(
-                    Constants.bird_x_distance - (int)(Constants.bird_size * (scale / 2)),
-                    (Convert.ToInt32(position)) - (int)(Constants.bird_size * (scale / 2)),
-                    (int)(Constants.bird_size * scale), (int)(Constants.bird_size * scale)
-                ),
-                Color.White
-            );
+            ); if (Constants.debug)
+            {
+                spriteBatch.Draw(
+                    test_texture,
+                    new Rectangle(
+                        Constants.bird_x_distance - (int)(bird_res * (scale / 2)),
+                        (Convert.ToInt32(position)) - (int)(bird_res * (scale / 2)),
+                        (int)(bird_res * scale), (int)(bird_res * scale)
+                    ),
+                    Color.White
+                );
+            }
         }
     }
 
@@ -194,7 +201,7 @@ namespace flappyBird
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("score");
-            bird = new Bird(Content.Load<Texture2D>("flappybird"), Content.Load<Texture2D>("pipe"));
+            bird = new Bird(Content.Load<Texture2D>("sprite_0"), Content.Load<Texture2D>("pipe"), Content.Load<Texture2D>("sprite_1"));
             pipes = new Pipes(Content.Load<Texture2D>("pipe"));
         }
 
@@ -213,7 +220,7 @@ namespace flappyBird
                 if (!pressedLastTick)
                 {
                     Console.WriteLine("Jump key pressed");
-                    bird.jump();
+                    bird.jump(gameTime);
                 }
                 pressedLastTick = true;
             }
@@ -230,11 +237,11 @@ namespace flappyBird
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Red);
+            GraphicsDevice.Clear(Color.BlanchedAlmond);
 
             spriteBatch.Begin();
 
-            bird.draw(spriteBatch);
+            bird.draw(spriteBatch, gameTime);
             pipes.draw(spriteBatch);
             // spriteBatch.DrawString(font, "Score: " + score, new Vector2(100, 100), Color.Green);
             spriteBatch.End();
