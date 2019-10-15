@@ -16,6 +16,15 @@ namespace flappyBird
             bird_x_distance = 60;
         public const double pipe_distance = 200;
         public const bool debug = false;
+        public static bool inter(int x, int y, int a, int b, int x1, int y1, int a1, int b1) =>
+            (x < x1 && x1 < x + a) ||
+            (x < x1 + a1 && x1 + a1 < x + a) ||
+            (x1 < x && x < x1 + a1) ||
+            (x1 < x + a && x + a < x1 + a1) ||
+            (y < y1 && y1 < y + b) ||
+            (y < y1 + b1 && y1 + b1 < y + b) ||
+            (y1 < y && y < y1 + b1) ||
+            (y1 < y + b && y + b < y1 + b1);
     }
 
     public class Bird
@@ -30,6 +39,8 @@ namespace flappyBird
         private Texture2D test_texture;
         private const double jump_time = 0.4;
         private double last_jump_time = jump_time * -1;
+        private int bird_res = 80;
+        private float scale = 0.9f;
         public void die()
         {
             dead = true;
@@ -58,12 +69,11 @@ namespace flappyBird
         public void jump(GameTime gameTime) { velocity = -150; last_jump_time = gameTime.TotalGameTime.TotalSeconds; }
         public void draw(SpriteBatch spriteBatch, GameTime gameTime)
         {
-            int bird_res = 80;
 
             Vector2 location = new Vector2(Constants.bird_x_distance, Convert.ToInt32(position));
             Rectangle sourceRectangle = new Rectangle(0, 0, bird_res, bird_res);
             Vector2 origin = new Vector2(bird_res / 2, bird_res / 2);
-            float scale = 0.9f;
+
 
             spriteBatch.Draw(
                 texture: gameTime.TotalGameTime.TotalSeconds - last_jump_time < jump_time ? texture_jump : texture,
@@ -79,15 +89,16 @@ namespace flappyBird
             {
                 spriteBatch.Draw(
                     test_texture,
-                    new Rectangle(
-                        Constants.bird_x_distance - (int)(bird_res * (scale / 2)),
-                        (Convert.ToInt32(position)) - (int)(bird_res * (scale / 2)),
-                        (int)(bird_res * scale), (int)(bird_res * scale)
-                    ),
+                    hit_box(),
                     Color.White
                 );
             }
         }
+        public Rectangle hit_box() => new Rectangle(
+                        Constants.bird_x_distance - (int)(bird_res * (scale / 2)),
+                        (Convert.ToInt32(position)) - (int)(bird_res * (scale / 2)),
+                        (int)(bird_res * scale), (int)(bird_res * scale)
+                    );
     }
 
     public class Pipes
@@ -115,6 +126,7 @@ namespace flappyBird
                 pipe_list.RemoveAt(0);
             }
         }
+
 
 
         public void draw(SpriteBatch spriteBatch)
@@ -148,28 +160,28 @@ namespace flappyBird
         {
             position -= velocity * interval;
         }
-        public void draw(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Draw(
-                texture,
-                new Rectangle(
+        public Rectangle[] pipe_rectangles() =>
+            new Rectangle[]{new Rectangle(
                     (int)position,
                     0,
                     Constants.pipe_width,
                     gap_position
-                ),
-                Color.White
-            );
-            spriteBatch.Draw(
-                texture,
-                new Rectangle(
+                ),new Rectangle(
                     (int)position,
                     gap_position + Constants.pipe_gap,
                     Constants.pipe_width,
                     Constants.window_height - (gap_position + Constants.pipe_gap)
-                ),
-                Color.White
-            );
+                )};
+
+        public void draw(SpriteBatch spriteBatch)
+        {
+            foreach (Rectangle rect in pipe_rectangles())
+                spriteBatch.Draw(
+                    texture,
+                    rect,
+                    Color.White
+                );
+
         }
     }
     public class MainGame : Game
@@ -201,7 +213,7 @@ namespace flappyBird
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("score");
-            bird = new Bird(Content.Load<Texture2D>("sprite_0"), Content.Load<Texture2D>("pipe"), Content.Load<Texture2D>("sprite_1"));
+            bird = new Bird(Content.Load<Texture2D>("sprite_0"), Content.Load<Texture2D>("debug"), Content.Load<Texture2D>("sprite_1"));
             pipes = new Pipes(Content.Load<Texture2D>("pipe"));
         }
 
