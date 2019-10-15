@@ -8,7 +8,7 @@ namespace flappyBird
 {
     class HelperFunc
     {
-        public static bool inter(Rectangle r1, Rectangle r2) =>
+        public static bool interlaced(Rectangle r1, Rectangle r2) =>
                     ((r1.X < r2.X && r2.X < r1.X + r1.Width)
                     || (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width)
                     || (r2.X < r1.X && r1.X < r2.X + r2.Width)
@@ -47,7 +47,7 @@ namespace flappyBird
             debug_texture;
 
         private double last_jump_time = jump_time * -1;
-        public Bird(Texture2D texture_, Texture2D debug_texture_, Texture2D texture_jump_)
+        public Bird(Texture2D texture_, Texture2D texture_jump_, Texture2D debug_texture_)
         {
             texture = texture_;
             debug_texture = debug_texture_;
@@ -99,7 +99,7 @@ namespace flappyBird
         public Rectangle hit_box() => new Rectangle(
             Constants.bird_x_distance - (int)(Constants.bird_res * (Constants.bird_scale / 2)),
             (Convert.ToInt32(position)) - (int)(Constants.bird_res * (Constants.bird_scale / 2)),
-            (Constants.bird_res * Constants.bird_scale),
+            (int)(Constants.bird_res * Constants.bird_scale),
             (int)(Constants.bird_res * Constants.bird_scale)
         );
     }
@@ -107,92 +107,79 @@ namespace flappyBird
     public class Pipes
     {
         private Random rnd = new Random();
-        public double velocity = 50;
-
-        private Texture2D texture;
+        private double velocity = 50;
         private List<Pipe> pipe_list = new List<Pipe>();
-        public Pipes(Texture2D texture2)
+        private Texture2D texture;
+
+        public Pipes(Texture2D texture_)
         {
-            texture = texture2;
+            texture = texture_;
             add_new_pipe();
         }
         public void update(double interval)
         {
             foreach (Pipe pipe in pipe_list) pipe.update(interval, velocity);
-
-            if (pipe_list[pipe_list.Count - 1].position < (Constants.window_width - Constants.pipe_distance))
-            {
+            if (pipe_list[pipe_list.Count - 1].position
+                < Constants.window_width - Constants.pipe_distance)
                 add_new_pipe();
-            }
             if (pipe_list[0].position < 0 - Constants.pipe_width)
-            {
                 pipe_list.RemoveAt(0);
-            }
         }
-
-
-
         public void draw(SpriteBatch spriteBatch)
         {
             foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
         }
+
         private void add_new_pipe()
         {
             int random_gap_pos = rnd.Next(0, Constants.window_height - Constants.pipe_gap);
             pipe_list.Add(new Pipe(texture, random_gap_pos));
         }
-
-        public void die()
-        {
-            velocity = 0;
-        }
-        public bool colis(Rectangle bird_rect)
+        public void die() => velocity = 0;
+        public bool pipe_collision(Rectangle bird_rect)
         {
             foreach (Pipe pipe in pipe_list)
                 foreach (Rectangle pipe_rec in pipe.pipe_rectangles())
-                    if (HelperFunc.inter(bird_rect, pipe_rec)) return true;
+                    if (HelperFunc.interlaced(bird_rect, pipe_rec)) return true;
             return false;
         }
     }
     public class Pipe
     {
-        private int gap_position;
         public double position;
+        private int gap_position;
         private Texture2D texture;
-        public Pipe(Texture2D texture2, int gap_position_arg)
+        public Pipe(Texture2D texture_, int gap_position_arg)
         {
-            texture = texture2;
+            texture = texture_;
             position = Constants.window_width;
             gap_position = gap_position_arg;
         }
-        public void update(double interval, double velocity)
-
-        {
+        public void update(double interval, double velocity) =>
             position -= velocity * interval;
+        public void draw(SpriteBatch spriteBatch)
+        {
+            foreach (Rectangle rect in pipe_rectangles())
+                spriteBatch.Draw(texture, rect, Color.White);
         }
+
         public Rectangle[] pipe_rectangles() =>
-            new Rectangle[]{new Rectangle(
+            new Rectangle[] {
+                new Rectangle(
                     (int)position,
                     0,
                     Constants.pipe_width,
                     gap_position
-                ),new Rectangle(
+                ),
+                new Rectangle(
                     (int)position,
                     gap_position + Constants.pipe_gap,
                     Constants.pipe_width,
-                    Constants.window_height - (gap_position + Constants.pipe_gap)
-                )};
+                    Constants.window_height - gap_position + Constants.pipe_gap
+                )
+            };
 
-        public void draw(SpriteBatch spriteBatch)
-        {
-            foreach (Rectangle rect in pipe_rectangles())
-                spriteBatch.Draw(
-                    texture,
-                    rect,
-                    Color.White
-                );
 
-        }
     }
     public class MainGame : Game
     {
@@ -203,7 +190,7 @@ namespace flappyBird
         private Bird bird;
         private Pipes pipes;
         private Boolean pressedLastTick = false;
-        private int score = 0;
+        // private int score = 0;
 
         public MainGame()
         {
@@ -214,8 +201,6 @@ namespace flappyBird
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
@@ -223,36 +208,40 @@ namespace flappyBird
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("score");
-            bird = new Bird(Content.Load<Texture2D>("sprite_0"), Content.Load<Texture2D>("debug"), Content.Load<Texture2D>("sprite_1"));
             pipes = new Pipes(Content.Load<Texture2D>("pipe"));
+            bird = new Bird(
+                Content.Load<Texture2D>("sprite_0"),
+                Content.Load<Texture2D>("sprite_1"),
+                Content.Load<Texture2D>("debug")
+            );
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (lastTime == null) lastTime = gameTime.TotalGameTime;
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
             double interval = (gameTime.TotalGameTime - lastTime).TotalSeconds;
+            if (lastTime == null) lastTime = gameTime.TotalGameTime;
+            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
+                Keyboard.GetState().IsKeyDown(Keys.Escape))
+                Exit();
             lastTime = gameTime.TotalGameTime;
-            // Console.WriteLine(bird.velocity);
             bird.update(interval);
             pipes.update(interval);
-            if ((bird.dead == false) && (Keyboard.GetState().IsKeyDown(Keys.Space) || Keyboard.GetState().IsKeyDown(Keys.Up)))
+            if ((bird.dead == false) &&
+                (Keyboard.GetState().IsKeyDown(Keys.Space) ||
+                Keyboard.GetState().IsKeyDown(Keys.Up)))
             {
                 if (!pressedLastTick)
-                {
-                    Console.WriteLine("Jump key pressed");
                     bird.jump(gameTime);
-                }
                 pressedLastTick = true;
             }
             else
             {
                 pressedLastTick = false;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.W) || pipes.colis(bird.hit_box()))
+            if (Keyboard.GetState().IsKeyDown(Keys.W) || pipes.pipe_collision(bird.hit_box()))
             {
-                pipes.die(); bird.die();
+                pipes.die();
+                bird.die();
             }
             base.Update(gameTime);
         }
@@ -266,6 +255,7 @@ namespace flappyBird
             bird.draw(spriteBatch, gameTime);
             pipes.draw(spriteBatch);
             // spriteBatch.DrawString(font, "Score: " + score, new Vector2(100, 100), Color.Green);
+
             spriteBatch.End();
 
             base.Draw(gameTime);
