@@ -36,8 +36,8 @@ namespace flappyBird
 
     public class Bird
     {
-        private const double jump_time = 0.4;
         public bool dead = false;
+        private const double jump_time = 0.4;
         private double acceleration = 200.0,
             velocity = 0,
             position = 0.0;
@@ -149,11 +149,11 @@ namespace flappyBird
         public double position;
         private int gap_position;
         private Texture2D texture;
-        public Pipe(Texture2D texture_, int gap_position_arg)
+        public Pipe(Texture2D texture_, int gap_position_)
         {
             texture = texture_;
             position = Constants.window_width;
-            gap_position = gap_position_arg;
+            gap_position = gap_position_;
         }
         public void update(double interval, double velocity) =>
             position -= velocity * interval;
