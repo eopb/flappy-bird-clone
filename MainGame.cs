@@ -16,15 +16,15 @@ namespace flappyBird
             bird_x_distance = 60;
         public const double pipe_distance = 200;
         public const bool debug = false;
-        public static bool inter(int x, int y, int a, int b, int x1, int y1, int a1, int b1) =>
-            ((x < x1 && x1 < x + a) ||
-            (x < x1 + a1 && x1 + a1 < x + a) ||
-            (x1 < x && x < x1 + a1) ||
-            (x1 < x + a && x + a < x1 + a1)) &&
-            ((y < y1 && y1 < y + b) ||
-            (y < y1 + b1 && y1 + b1 < y + b) ||
-            (y1 < y && y < y1 + b1) ||
-            (y1 < y + b && y + b < y1 + b1));
+        public static bool inter(Rectangle r1, Rectangle r2) =>
+            ((r1.X < r2.X && r2.X < r1.X + r1.Width) ||
+            (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width) ||
+            (r2.X < r1.X && r1.X < r2.X + r2.Width) ||
+            (r2.X < r1.X + r1.Width && r1.X + r1.Width < r2.X + r2.Width)) &&
+            ((r1.Y < r2.Y && r2.Y < r1.Y + r1.Height) ||
+            (r1.Y < r2.Y + r2.Height && r2.Y + r2.Height < r1.Y + r1.Height) ||
+            (r2.Y < r1.Y && r1.Y < r2.Y + r2.Height) ||
+            (r2.Y < r1.Y + r1.Height && r1.Y + r1.Height < r2.Y + r2.Height));
 
     }
 
@@ -150,7 +150,7 @@ namespace flappyBird
                 foreach (Rectangle pipe_rec in pipe.pipe_rectangles())
                 {
 
-                    if (Constants.inter(bird_rect.X, bird_rect.Y, bird_rect.Width, bird_rect.Height, pipe_rec.X, pipe_rec.Y, pipe_rec.Width, pipe_rec.Height))
+                    if (Constants.inter(bird_rect, pipe_rec))
                     {
                         Console.WriteLine(pipe_rec); Console.WriteLine(bird_rect); return true;
                     }
