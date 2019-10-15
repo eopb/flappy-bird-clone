@@ -45,8 +45,8 @@ namespace flappyBird
         private Texture2D texture,
             texture_jump,
             debug_texture;
-
         private double last_jump_time = jump_time * -1;
+
         public Bird(Texture2D texture_, Texture2D texture_jump_, Texture2D debug_texture_)
         {
             texture = texture_;
