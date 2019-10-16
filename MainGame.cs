@@ -107,7 +107,7 @@ namespace flappyBird
     public class Pipes
     {
         private Random rnd = new Random();
-        private double velocity = 50;
+        private double velocity = 60;
         private List<Pipe> pipe_list = new List<Pipe>();
         private Texture2D texture;
 
