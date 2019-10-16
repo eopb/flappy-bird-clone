@@ -6,19 +6,6 @@ using System.Collections.Generic;
 
 namespace flappyBird
 {
-    class HelperFunc
-    {
-        public static bool interlaced(Rectangle r1, Rectangle r2) =>
-            ((r1.X < r2.X && r2.X < r1.X + r1.Width)
-            || (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width)
-            || (r2.X < r1.X && r1.X < r2.X + r2.Width)
-            || (r2.X < r1.X + r1.Width && r1.X + r1.Width < r2.X + r2.Width))
-            &&
-            ((r1.Y < r2.Y && r2.Y < r1.Y + r1.Height)
-            || (r1.Y < r2.Y + r2.Height && r2.Y + r2.Height < r1.Y + r1.Height)
-            || (r2.Y < r1.Y && r1.Y < r2.Y + r2.Height)
-            || (r2.Y < r1.Y + r1.Height && r1.Y + r1.Height < r2.Y + r2.Height));
-    }
     class Constants
     {
         public const int window_width = 800,
@@ -32,6 +19,19 @@ namespace flappyBird
         public const float bird_scale = 0.9f;
         public const bool debug = false;
 
+    }
+    class HelperFunc
+    {
+        public static bool interlaced(Rectangle r1, Rectangle r2) =>
+            ((r1.X < r2.X && r2.X < r1.X + r1.Width)
+            || (r1.X < r2.X + r2.Width && r2.X + r2.Width < r1.X + r1.Width)
+            || (r2.X < r1.X && r1.X < r2.X + r2.Width)
+            || (r2.X < r1.X + r1.Width && r1.X + r1.Width < r2.X + r2.Width))
+            &&
+            ((r1.Y < r2.Y && r2.Y < r1.Y + r1.Height)
+            || (r1.Y < r2.Y + r2.Height && r2.Y + r2.Height < r1.Y + r1.Height)
+            || (r2.Y < r1.Y && r1.Y < r2.Y + r2.Height)
+            || (r2.Y < r1.Y + r1.Height && r1.Y + r1.Height < r2.Y + r2.Height));
     }
 
     public class Bird
