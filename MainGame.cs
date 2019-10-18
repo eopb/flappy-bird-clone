@@ -47,11 +47,11 @@ namespace flappyBird
             debug_texture;
         private double last_jump_time = jump_time * -1;
 
-        public Bird(Texture2D texture_, Texture2D texture_jump_, Texture2D debug_texture_)
+        public Bird(Texture2D texture, Texture2D texture_jump, Texture2D debug_texture)
         {
-            texture = texture_;
-            debug_texture = debug_texture_;
-            texture_jump = texture_jump_;
+            this.texture = texture;
+            this.debug_texture = debug_texture;
+            this.texture_jump = texture_jump;
         }
 
         public void update(double interval)
@@ -111,9 +111,9 @@ namespace flappyBird
         private List<Pipe> pipe_list = new List<Pipe>();
         private Texture2D texture;
 
-        public Pipes(Texture2D texture_)
+        public Pipes(Texture2D texture)
         {
-            texture = texture_;
+            this.texture = texture;
             add_new_pipe();
         }
         public void update(double interval)
@@ -149,11 +149,11 @@ namespace flappyBird
         public double position;
         private int gap_position;
         private Texture2D texture;
-        public Pipe(Texture2D texture_, int gap_position_)
+        public Pipe(Texture2D texture, int gap_position)
         {
-            texture = texture_;
             position = Constants.window_width;
-            gap_position = gap_position_;
+            this.texture = texture;
+            this.gap_position = gap_position;
         }
         public void update(double interval, double velocity) =>
             position -= velocity * interval;
