@@ -38,7 +38,7 @@ namespace flappyBird
     {
         public bool dead = false;
         private const double jump_time = 0.4;
-        private double acceleration = 200.0,
+        private double acceleration = 250.0,
             velocity = 0,
             position = 0.0;
         private float angle = 0f;
@@ -87,7 +87,7 @@ namespace flappyBird
         public void jump(GameTime gameTime)
         {
             last_jump_time = gameTime.TotalGameTime.TotalSeconds;
-            velocity = -150;
+            velocity = -165;
         }
         public void die()
         {
