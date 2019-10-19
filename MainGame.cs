@@ -221,7 +221,12 @@ namespace flappyBird
                     Constants.window_width,
                     Constants.window_height
                 ), Color.Red);
-                spriteBatch.DrawString(font, $"Game Over - Score: {score}", new Vector2(230, 200 + (int)position), Color.White);
+                spriteBatch.DrawString(
+                    font,
+                    $"Game Over - Score: {score}",
+                    new Vector2(230, 200 + (int)position),
+                    Color.White
+                );
             }
         }
 
