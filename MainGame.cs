@@ -188,8 +188,6 @@ namespace flappyBird
                     Constants.window_height - gap_position + Constants.pipe_gap
                 )
             };
-
-
     }
     public class MainGame : Game
     {
@@ -243,10 +241,8 @@ namespace flappyBird
                     bird.jump(gameTime);
                 pressedLastTick = true;
             }
-            else
-            {
-                pressedLastTick = false;
-            }
+            else pressedLastTick = false;
+
             if (Keyboard.GetState().IsKeyDown(Keys.W) || pipes.pipe_collision(bird.hit_box()))
             {
                 pipes.die();
