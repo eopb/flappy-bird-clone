@@ -107,7 +107,7 @@ namespace flappyBird
 
     public class Pipes
     {
-        static int score = 0;
+        static int score_est = 0;
         Random rnd = new Random();
         double velocity = 60;
         List<Pipe> pipe_list = new List<Pipe>();
@@ -127,15 +127,15 @@ namespace flappyBird
             if (pipe_list[0].position < 0 - Constants.pipe_width)
             {
                 pipe_list.RemoveAt(0);
-                score++;
-                Console.WriteLine(score);
+                score_est++;
+                Console.WriteLine(score_est);
             }
         }
-        public int get_true_score() =>
+        public int score() =>
             pipe_list[0].position + (Constants.pipe_width / 2)
             <= Constants.bird_x_distance + ((Constants.bird_res * (Constants.bird_scale / 2)) / 2)
-                ? score + 1
-                : score;
+                ? score_est + 1
+                : score_est;
         public void draw(SpriteBatch spriteBatch)
         {
             foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
@@ -201,7 +201,6 @@ namespace flappyBird
         Bird bird;
         Pipes pipes;
         Boolean pressedLastTick = false;
-        // private int score = 0;
 
         public MainGame()
         {
@@ -254,7 +253,7 @@ namespace flappyBird
                 pipes.die();
                 bird.die();
             }
-            Console.WriteLine(pipes.get_true_score());
+            Console.WriteLine(pipes.score());
             base.Update(gameTime);
         }
 
