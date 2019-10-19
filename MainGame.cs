@@ -37,15 +37,15 @@ namespace flappyBird
     public class Bird
     {
         public bool dead = false;
-        private const double jump_time = 0.4;
-        private double acceleration = 250.0,
+        const double jump_time = 0.4;
+        double acceleration = 250.0,
             velocity = 0,
             position = 0.0;
-        private float angle = 0f;
-        private Texture2D texture,
+        float angle = 0f;
+        Texture2D texture,
             texture_jump,
             debug_texture;
-        private double last_jump_time = jump_time * -1;
+        double last_jump_time = jump_time * -1;
 
         public Bird(Texture2D texture, Texture2D texture_jump, Texture2D debug_texture)
         {
@@ -106,10 +106,10 @@ namespace flappyBird
 
     public class Pipes
     {
-        private Random rnd = new Random();
-        private double velocity = 60;
-        private List<Pipe> pipe_list = new List<Pipe>();
-        private Texture2D texture;
+        Random rnd = new Random();
+        double velocity = 60;
+        List<Pipe> pipe_list = new List<Pipe>();
+        Texture2D texture;
 
         public Pipes(Texture2D texture)
         {
@@ -130,7 +130,7 @@ namespace flappyBird
             foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
         }
 
-        private void add_new_pipe()
+        void add_new_pipe()
         {
             int random_gap_pos = rnd.Next(0, Constants.window_height - Constants.pipe_gap);
             pipe_list.Add(new Pipe(texture, random_gap_pos));
@@ -147,8 +147,8 @@ namespace flappyBird
     public class Pipe
     {
         public double position;
-        private int gap_position;
-        private Texture2D texture;
+        int gap_position;
+        Texture2D texture;
         public Pipe(Texture2D texture, int gap_position)
         {
             position = Constants.window_width;
@@ -185,11 +185,11 @@ namespace flappyBird
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        private SpriteFont font;
-        private TimeSpan lastTime;
-        private Bird bird;
-        private Pipes pipes;
-        private Boolean pressedLastTick = false;
+        SpriteFont font;
+        TimeSpan lastTime;
+        Bird bird;
+        Pipes pipes;
+        Boolean pressedLastTick = false;
         // private int score = 0;
 
         public MainGame()
