@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-
+//TODO maybe remove _'s as they don't really follow c# style.
 namespace flappyBird
 {
     //TODO maybe static members would be better than this!
