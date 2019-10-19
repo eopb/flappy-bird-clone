@@ -90,6 +90,9 @@ namespace flappyBird
             last_jump_time = gameTime.TotalGameTime.TotalSeconds;
             velocity = -165;
         }
+        public bool out_of_bounds() =>
+            position < (0 - (Constants.bird_res * (Constants.bird_scale / 2)))
+            || position > (Constants.window_height + (Constants.bird_res * (Constants.bird_scale / 2)));
         public void die()
         {
             dead = true;
@@ -289,7 +292,9 @@ namespace flappyBird
             }
             else pressedLastTick = false;
 
-            if (Keyboard.GetState().IsKeyDown(Keys.W) || pipes.pipe_collision(bird.hit_box()))
+            if (Keyboard.GetState().IsKeyDown(Keys.W)
+                || pipes.pipe_collision(bird.hit_box())
+                || bird.out_of_bounds())
             {
                 pipes.die();
                 bird.die();
