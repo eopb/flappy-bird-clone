@@ -203,14 +203,15 @@ namespace flappyBird
         public void update(double interval)
         {
         }
-        public void draw(SpriteBatch spriteBatch)
+        public void draw(SpriteBatch spriteBatch, int score)
         {
             spriteBatch.Draw(texture, new Rectangle(
                 0,
                 0,
                 Constants.window_width,
                 Constants.window_height
-            ), Color.White);
+            ), Color.Red);
+            spriteBatch.DrawString(font, $"Game Over - Score: {score}", new Vector2(230, 200), Color.White);
         }
 
     }
@@ -287,8 +288,8 @@ namespace flappyBird
 
             bird.draw(spriteBatch, gameTime);
             pipes.draw(spriteBatch);
-            spriteBatch.DrawString(font, "Score: " + pipes.score(), new Vector2(630, 400), Color.Black);
-            gameOverCard.draw(spriteBatch);
+            spriteBatch.DrawString(font, $"Score: {pipes.score()}", new Vector2(630, 400), Color.Black);
+            gameOverCard.draw(spriteBatch, pipes.score());
 
             spriteBatch.End();
 
