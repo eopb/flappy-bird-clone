@@ -191,8 +191,7 @@ namespace flappyBird
     }
     public class GameOverCard
     {
-        const double startPosition = Constants.window_height * -1;
-        double position = startPosition;
+        double position = Constants.window_height * -1;
         bool dead = false;
         const double velocity = 300;
         Texture2D texture;
