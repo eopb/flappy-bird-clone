@@ -191,7 +191,8 @@ namespace flappyBird
     }
     public class GameOverCard
     {
-        double position = Constants.window_height * -1;
+        const double startPosition = Constants.window_height * -1;
+        double position = startPosition;
         bool dead = false;
         const double velocity = 300;
         Texture2D texture;
@@ -206,22 +207,23 @@ namespace flappyBird
         public void update(double interval)
         {
             if (dead)
-            {
                 if (position >= 0)
                     position = 0;
                 else
                     position += interval * velocity;
-            }
         }
         public void draw(SpriteBatch spriteBatch, int score)
         {
-            spriteBatch.Draw(texture, new Rectangle(
-                0,
-                (int)position,
-                Constants.window_width,
-                Constants.window_height
-            ), Color.Red);
-            spriteBatch.DrawString(font, $"Game Over - Score: {score}", new Vector2(230, 200 + (int)position), Color.White);
+            if (dead)
+            {
+                spriteBatch.Draw(texture, new Rectangle(
+                    0,
+                    (int)position,
+                    Constants.window_width,
+                    Constants.window_height
+                ), Color.Red);
+                spriteBatch.DrawString(font, $"Game Over - Score: {score}", new Vector2(230, 200 + (int)position), Color.White);
+            }
         }
 
     }
