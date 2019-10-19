@@ -128,7 +128,6 @@ namespace flappyBird
             {
                 pipe_list.RemoveAt(0);
                 score_est++;
-                Console.WriteLine(score_est);
             }
         }
         public int score() =>
@@ -253,7 +252,6 @@ namespace flappyBird
                 pipes.die();
                 bird.die();
             }
-            Console.WriteLine(pipes.score());
             base.Update(gameTime);
         }
 
@@ -265,7 +263,7 @@ namespace flappyBird
 
             bird.draw(spriteBatch, gameTime);
             pipes.draw(spriteBatch);
-            // spriteBatch.DrawString(font, "Score: " + score, new Vector2(100, 100), Color.Green);
+            spriteBatch.DrawString(font, "Score: " + pipes.score(), new Vector2(630, 400), Color.Black);
 
             spriteBatch.End();
 
