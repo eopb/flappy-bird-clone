@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace flappyBird
 {
+    //TODO maybe static members would be better than this!
     class Constants
     {
         public const int window_width = 800,
