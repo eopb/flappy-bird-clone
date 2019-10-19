@@ -191,9 +191,12 @@ namespace flappyBird
     }
     public class GameOverCard
     {
+        double position = Constants.window_height * -1;
+        bool dead = false;
+        const double velocity = 300;
         Texture2D texture;
         SpriteFont font;
-
+        public void die() => dead = true;
         public GameOverCard(Texture2D texture, SpriteFont font)
         {
             this.texture = texture;
@@ -202,16 +205,23 @@ namespace flappyBird
 
         public void update(double interval)
         {
+            if (dead)
+            {
+                if (position >= 0)
+                    position = 0;
+                else
+                    position += interval * velocity;
+            }
         }
         public void draw(SpriteBatch spriteBatch, int score)
         {
             spriteBatch.Draw(texture, new Rectangle(
                 0,
-                0,
+                (int)position,
                 Constants.window_width,
                 Constants.window_height
             ), Color.Red);
-            spriteBatch.DrawString(font, $"Game Over - Score: {score}", new Vector2(230, 200), Color.White);
+            spriteBatch.DrawString(font, $"Game Over - Score: {score}", new Vector2(230, 200 + (int)position), Color.White);
         }
 
     }
@@ -262,6 +272,7 @@ namespace flappyBird
             lastTime = gameTime.TotalGameTime;
             bird.update(interval);
             pipes.update(interval);
+            gameOverCard.update(interval);
             if ((bird.dead == false) &&
                 (Keyboard.GetState().IsKeyDown(Keys.Space) ||
                 Keyboard.GetState().IsKeyDown(Keys.Up)))
@@ -276,6 +287,7 @@ namespace flappyBird
             {
                 pipes.die();
                 bird.die();
+                gameOverCard.die();
             }
             base.Update(gameTime);
         }
