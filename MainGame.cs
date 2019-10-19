@@ -189,6 +189,32 @@ namespace flappyBird
                 )
             };
     }
+    public class GameOverCard
+    {
+        Texture2D texture;
+        SpriteFont font;
+
+        public GameOverCard(Texture2D texture, SpriteFont font)
+        {
+            this.texture = texture;
+            this.font = font;
+        }
+
+        public void update(double interval)
+        {
+        }
+        public void draw(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(texture, new Rectangle(
+                0,
+                0,
+                Constants.window_width,
+                Constants.window_height
+            ), Color.White);
+        }
+
+    }
+
     public class MainGame : Game
     {
         GraphicsDeviceManager graphics;
@@ -197,6 +223,7 @@ namespace flappyBird
         TimeSpan lastTime;
         Bird bird;
         Pipes pipes;
+        GameOverCard gameOverCard;
         Boolean pressedLastTick = false;
 
         public MainGame()
@@ -221,6 +248,7 @@ namespace flappyBird
                 Content.Load<Texture2D>("sprite_1"),
                 Content.Load<Texture2D>("debug")
             );
+            gameOverCard = new GameOverCard(Content.Load<Texture2D>("pipe"), font);
         }
 
         protected override void Update(GameTime gameTime)
@@ -260,6 +288,7 @@ namespace flappyBird
             bird.draw(spriteBatch, gameTime);
             pipes.draw(spriteBatch);
             spriteBatch.DrawString(font, "Score: " + pipes.score(), new Vector2(630, 400), Color.Black);
+            gameOverCard.draw(spriteBatch);
 
             spriteBatch.End();
 
