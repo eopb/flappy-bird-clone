@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -107,6 +107,7 @@ namespace flappyBird
 
     public class Pipes
     {
+        static int score = 0;
         Random rnd = new Random();
         double velocity = 60;
         List<Pipe> pipe_list = new List<Pipe>();
@@ -124,8 +125,17 @@ namespace flappyBird
                 < Constants.window_width - Constants.pipe_distance)
                 add_new_pipe();
             if (pipe_list[0].position < 0 - Constants.pipe_width)
+            {
                 pipe_list.RemoveAt(0);
+                score++;
+                Console.WriteLine(score);
+            }
         }
+        public int get_true_score() =>
+            pipe_list[0].position + (Constants.pipe_width / 2)
+            <= Constants.bird_x_distance + ((Constants.bird_res * (Constants.bird_scale / 2)) / 2)
+                ? score + 1
+                : score;
         public void draw(SpriteBatch spriteBatch)
         {
             foreach (Pipe pipe in pipe_list) pipe.draw(spriteBatch);
@@ -244,6 +254,7 @@ namespace flappyBird
                 pipes.die();
                 bird.die();
             }
+            Console.WriteLine(pipes.get_true_score());
             base.Update(gameTime);
         }
 
